@@ -54,4 +54,13 @@ const calcScore = (city) => {
 
 const scoredCities = R.map(calcScore, updateCities);
 
-console.log(scoredCities);
+//console.log(scoredCities);
+
+const filterByWeather = (city) => {
+  const { temp = 0, humidity = 0 } = city;
+  return temp > 68 && temp < 85 && humidity > 30 && humidity < 70;
+};
+
+const filteredCities = R.filter(filterByWeather, scoredCities);
+
+console.log(R.length(filteredCities));
