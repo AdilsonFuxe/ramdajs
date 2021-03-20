@@ -63,4 +63,15 @@ const filterByWeather = (city) => {
 
 const filteredCities = R.filter(filterByWeather, scoredCities);
 
-console.log(R.length(filteredCities));
+// console.log(R.length(filteredCities));
+
+const sortedCities = R.sortWith(
+  [R.descend((city) => city.score)],
+  scoredCities
+);
+
+//console.log(sortedCities);
+
+const top10 = R.take(10, sortedCities);
+console.log(top10);
+console.log(R.length(top10));
