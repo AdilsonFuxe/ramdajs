@@ -1,5 +1,6 @@
 const R = require('ramda');
 const cities = require('./cities.json');
+const percentile = require('./percentile');
 
 const KtoC = (k) => k - 273.15;
 const KtoF = (k) => (k * 9) / 5 - 459.67;
@@ -37,4 +38,20 @@ const groupedByPropReducer = (acc, city) => {
 
 const groupedByProp = R.reduce(groupedByPropReducer, {}, updateCities);
 
-console.log(groupedByProp);
+//console.log(groupedByProp);
+
+const calcScore = (city) => {
+  const { cost = 0, internetSpeed = 0 } = city;
+  const costPercentile = percentile(groupedByProp.cost, cost);
+  const internetSpeedPercentile = percentile(
+    groupedByProp.internetSpeed,
+    internetSpeed
+  );
+
+  const score = 100 * (1.0 - costPercentile) + 20 * internetSpeedPercentile;
+  return R.merge(city, { score });
+};
+
+const scoredCities = R.map(calcScore, updateCities);
+
+console.log(scoredCities);
