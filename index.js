@@ -11,8 +11,18 @@ const updateTemperature = R.curry((convertFn, city) => {
 
 const updateCities = R.map(updateTemperature(KtoC), cities);
 
-console.log(updateCities);
+//console.log(updateCities);
 
 const city = cities[0];
 
-console.log(updateTemperature(KtoC, city));
+//console.log(updateTemperature(KtoC, city));
+
+const totalCostReducer = (acc, city) => {
+  const { cost = 0 } = city;
+  return acc + cost;
+};
+
+//const totalCost = updateCities.reduce(totalCostReducer, 0);
+const totalCost = R.reduce(totalCostReducer, 0, updateCities);
+const cityCount = R.length(updateCities);
+console.log(totalCost / cityCount);
